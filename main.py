@@ -18,16 +18,8 @@
 # uvicorn             0.16.0
 
 import pandas as pd
-import numpy as np
-import ast
-import math
-
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 from fastapi import FastAPI
-from pydantic import BaseModel
-from typing import Optional
 
 # Se importa el archivo 'LARG_moviesdataset_reducido.csv' con los datos de las peliculas,
 # este archivo ya contiene la data limpiada.
