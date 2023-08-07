@@ -3,31 +3,25 @@
 # Email: ramirezluisalberto@hotmail.com<br>
 # Email: ramirezgluisalberto@gmail.com<br>
 
-# Versiones paquetes utilizados: <br>
-# OS: Linux x64 3.10.0-1160.92.1.el7.x8_64<br>
-# Visual Studio Code 1.80.1<br>
-# Python 3.6.8<br>
-# fastapi             0.83.0
-# pip                 21.3.1
-# matplotlib          3.3.4
-# numpy               1.19.5
-# pandas              1.1.5
-# pip                 21.3.1
-# seaborn             0.11.2
-# sklearn             0.0.post1
-# uvicorn             0.16.0
-
 import pandas as pd
+from wordcloud import WordCloud
 
 from fastapi import FastAPI
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import CountVectorizer
 
 # Se importa el archivo 'LARG_moviesdataset_reducido.csv' con los datos de las peliculas,
 # este archivo ya contiene la data limpiada.
-ruta_archivo_movies = "./Datasets/LARG_moviesdataset_reducido.csv"
+
+ruta_archivo_movies = "./Datasets/LARG_moviesdataset_reducido_ml_sample_60.csv"
+#ruta_archivo_movies = "./Datasets/LARG_moviesdataset_reducido.csv"
 LARG_moviesdataset_reducido = pd.read_csv(ruta_archivo_movies)
 
+#ruta_archivo_movies_ml = "./Datasets/LARG_moviesdataset_reducido_ml_sample_mask.csv"
+#LARG_moviesdataset_reducido_ml = pd.read_csv(ruta_archivo_movies_ml)
+
 # Se instancia una variable de tipo FastAPI
-app = FastAPI()
+app = FastAPI(title='PI_ML_OPS-main', description='Luis A Ramirez G')
 
 # def peliculas_idioma( Idioma: str ): 
 # Se ingresa un idioma (como están escritos en el dataset, no hay que traducirlos!). 
@@ -112,3 +106,27 @@ def get_director(director:str):
     except (ValueError, SyntaxError):
         pass 
     return lista
+
+# Preprocesamiento de datos
+# Convertir columnas relevantes en una sola columna para calcular la similitud.
+# Se trabajara con los datos de las columnas: belongs_to_collection, popularity, vote_average, budget, revenue
+# del LARG_moviesdataset_reducido
+LARG_moviesdataset_reducido['columnas_concatenadas'] = LARG_moviesdataset_reducido['belongs_to_collection'].fillna('') + ' ' + LARG_moviesdataset_reducido['popularity'].astype(str) + ' ' + LARG_moviesdataset_reducido['vote_average'].astype(str) + ' ' + LARG_moviesdataset_reducido['budget'].astype(str) + ' ' + LARG_moviesdataset_reducido['revenue'].astype(str)
+# LARG_moviesdataset_reducido_ml['columnas_concatenadas'] = LARG_moviesdataset_reducido_ml['belongs_to_collection'].fillna('') + ' ' + LARG_moviesdataset_reducido_ml['popularity'].astype(str) + ' ' + LARG_moviesdataset_reducido_ml['vote_average'].astype(str)
+
+# Se crea un vector para realizar el calculo de similitud
+count_vectorizer = CountVectorizer()
+count_matrix = count_vectorizer.fit_transform(LARG_moviesdataset_reducido['columnas_concatenadas'])
+cosine_sim = cosine_similarity(count_matrix)
+
+# Se crea la Funcion para la recomendacion
+@app.get('/get_recomendacion/{titulo}')
+def get_recomendacion(titulo:str):
+    try:
+        index = LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'] == titulo].index[0]
+        similar_scores = list(enumerate(cosine_sim[index]))
+        similar_scores = sorted(similar_scores, key=lambda x: x[1], reverse=True)
+        similar_movies = [LARG_moviesdataset_reducido.iloc[i[0]]['title'] for i in similar_scores[1:6]]
+    except (ValueError, SyntaxError):
+        pass 
+    return similar_movies
