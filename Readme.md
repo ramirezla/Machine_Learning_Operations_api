@@ -651,7 +651,7 @@ Se preparan el set de datos con variables categóricas y numéricas con los dato
 - Con la columna concatenada 'columnas_concatenadas' se crea un vector para realizar el calculo de similitud.<br>
 - Se utiliza `CountVectorizer()` de la libreria sklearn esto permitira crear una matriz de cantidad de cada tokens.<br>
 - Se obtiene el indice del dataset ubicando el campo 'title'
-- cosine_sim
+- cosine_similarity busca las similitudes entre dos vectores
 - Se ordena por scores similares
 - Retornando los 5 primeros elementos, los cuales seran las peliculas recomendadas.
 
