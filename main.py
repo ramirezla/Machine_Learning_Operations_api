@@ -108,8 +108,7 @@ def get_director(director:str):
 
 # Se trabajara con los datos de las columnas: belongs_to_collection, popularity, genres, cast, vote_count
 # del LARG_moviesdataset_reducido
-LARG_moviesdataset_reducido['columnas_concatenadas'] = LARG_moviesdataset_reducido['belongs_to_collection'].fillna('') + ' ' + LARG_moviesdataset_reducido['popularity'].astype(str) + ' ' + LARG_moviesdataset_reducido['genres'].astype(str) + ' ' + LARG_moviesdataset_reducido['cast'].astype(str) + ' ' + LARG_moviesdataset_reducido['vote_count'].astype(str)
-
+LARG_moviesdataset_reducido['columnas_concatenadas'] = LARG_moviesdataset_reducido['popularity'].astype(str) + ' ' + LARG_moviesdataset_reducido['genres'].astype(str) + ' ' + LARG_moviesdataset_reducido['cast'].astype(str) + ' ' + LARG_moviesdataset_reducido['vote_count'].astype(str)
 
 # Se crea un vector para realizar el calculo de similitud
 count_vectorizer = CountVectorizer()
