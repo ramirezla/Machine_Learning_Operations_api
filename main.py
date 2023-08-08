@@ -106,7 +106,7 @@ def productoras_exitosas(productora:str):
 @app.get('/get_director/{director}')
 def get_director(director:str):
     try:
-        df_Director = df_movies_des[df_movies_des['crew'].str.contains(director)]   
+        df_Director = LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['crew'].str.contains(director)]   
         Peliculas_del_Director = df_Director[['title', 'release_year', 'revenue', 'budget']]
         retorno_total_director = 0
         if(Peliculas_del_Director['budget'].sum() != 0):
