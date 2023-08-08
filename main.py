@@ -85,24 +85,6 @@ def productoras_exitosas(productora:str):
 # debiendo devolver el éxito del mismo medido a través del retorno. 
 # Además, deberá devolver el nombre de cada película con la fecha de lanzamiento, 
 # retorno individual, costo y ganancia de la misma, en formato lista.
-# @app.get('/get_director/{director}')
-# def get_director(director:str):
-#     try:
-#         lista = []
-#         for i, valor in enumerate(df_split_job):
-#             for j in range(len(valor)):
-#                 if valor[j] == 'Director':
-#                     if (df_split_crew[i][j] == director):
-#                         lista.append([df_split_crew[i][j], 
-#                                     LARG_moviesdataset_reducido['title'][i],
-#                                     LARG_moviesdataset_reducido['release_date'][i],
-#                                     round(LARG_moviesdataset_reducido['return'][i], 2),
-#                                     LARG_moviesdataset_reducido['budget'][i],
-#                                     LARG_moviesdataset_reducido['revenue'][i]])
-#     except (ValueError, SyntaxError):
-#         pass 
-#     return lista
-
 @app.get('/get_director/{director}')
 def get_director(director:str):
     try:
@@ -119,10 +101,15 @@ def get_director(director:str):
 # Modelo de recomendacion
 # Preprocesamiento de datos
 # Convertir columnas relevantes en una sola columna para calcular la similitud.
+
 # Se trabajara con los datos de las columnas: belongs_to_collection, popularity, vote_average, budget, revenue
 # del LARG_moviesdataset_reducido
-LARG_moviesdataset_reducido['columnas_concatenadas'] = LARG_moviesdataset_reducido['belongs_to_collection'].fillna('') + ' ' + LARG_moviesdataset_reducido['popularity'].astype(str) + ' ' + LARG_moviesdataset_reducido['vote_average'].astype(str) + ' ' + LARG_moviesdataset_reducido['budget'].astype(str) + ' ' + LARG_moviesdataset_reducido['revenue'].astype(str)
-# LARG_moviesdataset_reducido_ml['columnas_concatenadas'] = LARG_moviesdataset_reducido_ml['belongs_to_collection'].fillna('') + ' ' + LARG_moviesdataset_reducido_ml['popularity'].astype(str) + ' ' + LARG_moviesdataset_reducido_ml['vote_average'].astype(str)
+# LARG_moviesdataset_reducido['columnas_concatenadas'] = LARG_moviesdataset_reducido['belongs_to_collection'].fillna('') + ' ' + LARG_moviesdataset_reducido['popularity'].astype(str) + ' ' + LARG_moviesdataset_reducido['vote_average'].astype(str) + ' ' + LARG_moviesdataset_reducido['budget'].astype(str) + ' ' + LARG_moviesdataset_reducido['revenue'].astype(str)
+
+# Se trabajara con los datos de las columnas: belongs_to_collection, popularity, genres, cast, vote_count
+# del LARG_moviesdataset_reducido
+LARG_moviesdataset_reducido['columnas_concatenadas'] = LARG_moviesdataset_reducido['belongs_to_collection'].fillna('') + ' ' + LARG_moviesdataset_reducido['popularity'].astype(str) + ' ' + LARG_moviesdataset_reducido['genres'].astype(str) + ' ' + LARG_moviesdataset_reducido['cast'].astype(str) + ' ' + LARG_moviesdataset_reducido['vote_count'].astype(str)
+
 
 # Se crea un vector para realizar el calculo de similitud
 count_vectorizer = CountVectorizer()

@@ -3,3 +3,6 @@ venv
 venv/
 Datasets/credits.csv
 Datasets/movies_dataset.csv
+Datasets/LARG_moviesdataset_reducido_ml.csv
+Datasets/LARG_moviesdataset_reducido_ml_sample
+Datasets/LARG_moviesdataset_reducido_ml_sample_mask

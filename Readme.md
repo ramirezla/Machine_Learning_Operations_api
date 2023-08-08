@@ -1,8 +1,20 @@
+## Table of Contents
+1. [Informacion General](#informacion-general)
+2. [ETL - Extraction, Transformation and Loading](#etl---extraction-transformation-and-loading)<br>
+    2.1. [Diccionario de Datos movies_dataset](#diccionario-de-datos-movies_dataset)<br>
+    2.2. [Importando datasets: movies_dataset.csv](#1--importando-datasets-movies_datasetcsv)<br>
+    2.3. [Diccionario de Datos credits.csv](#diccionario-de-datos-credits)<br>
+    2.4. [Importando datasets: credits.csv](#1--importando-datasets-creditscsv)<br>
+3. [EDA - Exploratory Data Analysis](#eda---exploratory-data-analysis)
+4. [API -  Application Programming Interface](#api---application-programming-interface)
+5. [ML -  Machine Learning](#ml---machine-learning)
+***
 - - -
-Estudiante: Luis A, Ramirez G.<br>
+### Informacion General
+### Estudiante: *Luis A, Ramirez G.*<br>
 GitHub: ramirezla<br>
-Email: ramirezluisalberto@hotmail.com<br>
-Email: ramirezgluisalberto@gmail.com<br>
+Email Github: ramirezluisalberto@hotmail.com<br>
+Email usuario Henry: ramirezgluisalberto@gmail.com<br>
 
 Versiones paquetes utilizados: <br>
 OS: Linux x64 3.10.0-1160.92.1.el7.x8_64<br>
@@ -19,8 +31,12 @@ sklearn             0.0.post1<br>
 uvicorn             0.16.0<br>
 
 Deploy render:<br>
-https://pi-ml-ops-main-fastapi-linux.onrender.com<br>
-https://pi-ml-ops-main-fastapi-linux.onrender.com/docs
+**https://pi-ml-ops-main-fastapi-linux.onrender.com**<br>
+**https://pi-ml-ops-main-fastapi-linux.onrender.com/docs**
+
+Repositorio Github del proyecto `PI_ML_OPS`<br>
+Usuario: ramirezla<br>
+`git@github.com:ramirezla/PI_ML_OPS-main_fastapi.git`
 
 - - -
 # <h1 align=center> **PROYECTO INDIVIDUAL Nº1** </h1>
@@ -30,9 +46,11 @@ https://pi-ml-ops-main-fastapi-linux.onrender.com/docs
 
 - - -
 
-# <h2 align=center> **ETL - Extraction, Transformation and Loading** </h1>
+# <h1 align=center> **ETL - Extraction, Transformation and Loading** </h1>
 
-1.- **`Se importan los datos desde el dataset: movies_dataset.csv`**.
+## ETL - Extraction, Transformation and Loading
+
+#### 1.- Informacion general de los datos.
 
 Se trata de entender o hacerse una idea general de los datos, observando las caracteristicas especiales de cada registro del set de datos.
 
@@ -57,7 +75,7 @@ Se trata de entender o hacerse una idea general de los datos, observando las car
 + [credits.csv](./Datasets/credits.csv)
 + [movies_dataset.csv](./Datasets/movies_dataset.csv)
 
-**`Diccionario de Datos movies_dataset`**:
+#### Diccionario de Datos movies_dataset:
 
 | Característica | Descripción |
 | --------- | --------- |
@@ -86,7 +104,7 @@ Se trata de entender o hacerse una idea general de los datos, observando las car
 | vote_average | Puntaje promedio de reseñas de la pelicula |
 | vote_count | Numeros de votos recibidos por la pelicula, en TMDB |
 
-**`Diccionario de Datos credits`**:
+#### Diccionario de Datos credits:
 
 - Cast and Crew<br>
 
@@ -111,7 +129,7 @@ Se trata de entender o hacerse una idea general de los datos, observando las car
 | name | Nombre del trabajor | Si |
 | profile_path | Curriculum del trabajador | No |
 - - -
-**`Librerias`**
+#### Librerias
 
 Se importan las librerias necesarias para realizar la limpieza de los datos.
 
@@ -132,7 +150,7 @@ Se importan las librerias necesarias para realizar la limpieza de los datos.
 **`from textblob import TextBlob`** <br>
 **`import nltk`** <br>
 - - -
-1.- **`Se importan los datos desde el dataset: movies_dataset.csv`**.
+#### 1.- Importando datasets: movies_dataset.csv
 
 Se trata de entender o hacerse una idea general de los datos, observando las caracteristicas especiales de cada registro del set de datos.
 
@@ -294,32 +312,7 @@ Total de datos del campo tagline:  45376<br>
 Cantidad de valores nulos del campo tagline:  24978<br>
 Porcentaje de datos nulos:  55.05 %
 - - -
-**`Diccionario de Datos credits`**:
-
-- Cast<br>
-
-| Característica | Descripción | Util |
-| --------- | --------- | --------- |
-| cast_id	| id del personaje. | No |
-| character	| Nombre del personaje | Si |
-| credit_id | id de los creditos | No |
-| gender | Genero | No |
-| id | id del Actor | No |
-| name | Nombre del actor | Si |
-| order |  | No |
-| profile_path | Curriculum del actor | No |
-
-- Crew<br>
-
-| Característica | Descripción | Util |
-| --------- | --------- | --------- |
-| credit_id	| id del credito. | No |
-| department	| Nombre del departamento: Directing, Sound, Writing, Camera, Production | Si |
-| gender | Genero | No |
-| id | id del cargo | No |
-| job | Nombre del cargo: Director, Original Music Composer, Screenplay, Director of Photography, Producer, Executive Producer, Writer, Costume Design, Casting | Si |
-| name | Nombre del trabajor | Si |
-| profile_path | Curriculum del trabajador | No |
+#### 1.- Importando datasets: credits.csv.
 
 **`Información visual del set de datos:`**
 
@@ -362,7 +355,9 @@ Se reutiliza ajustando la funcion: Valor_department_desde_list y Valor_job_desde
 
 - - -
 
-# <h2 align=center> **EDA - Exploratory Data Analysis** </h1>
+# <h1 align=center> **EDA - Exploratory Data Analysis** </h1>
+
+## EDA - Exploratory Data Analysis
 
 **`Análisis exploratorio de los datos`**
 
@@ -451,6 +446,9 @@ Con esto podemos determinar si alguna tiene una sola cetegoria, entonces, nos in
 | Columna job: | 13854 subniveles |
 | Columna crew: | 17101 subniveles |
 
+#### Realizando un diagrama BoxPlot<br>
+El Diagrama de Caja y bigotes (box and whisker plot en inglés) es un tipo de gráfico que muestra un resumen de una gran cantidad de datos en cinco medidas descriptivas, además de intuir su morfología y simetría. Este tipo de gráficos nos permiten visualizar y comparar la distribución y la tendencia central de valores numéricos mediante sus cuartiles.
+
 Verificar si hay outlies o valores extremos, se debe decidir si se eliminan o se mantienen, eso depende de lo que deseamos.
 Se realiza un grafico tipo boxplot de las variables numericas, en él podemos ver 
 
@@ -468,11 +466,19 @@ Observando la matrix de correlacion.
 <img src="./src/correlacion_01.png">
 </p>
 
-- - -
+Se realiza un grafico de barras mostrando la cantidad de generos por peliculas, solo para observar que la mayor cantidad de peliculas creadas entre 1896 al 2017 han sido las de Drama.
+
+<p align="center">
+<img src="./src/grafico_bar_generos.jpg">
+</p>
 
 - - -
 
-# <h2 align=center> **API -  Application Programming Interface** </h1>
+- - -
+
+# <h1 align=center> **API -  Application Programming Interface** </h1>
+
+## API -  Application Programming Interface
 
 Las API son mecanismos que permiten a dos componentes de software comunicarse entre sí mediante un conjunto de definiciones y protocolos. Por ejemplo, el sistema de software del instituto de meteorología contiene datos meteorológicos diarios. La aplicación meteorológica de su teléfono “habla” con este sistema a través de las API y le muestra las actualizaciones meteorológicas diarias en su teléfono.<br>
 
@@ -482,21 +488,22 @@ Las API de Rest consiste en que El cliente envía las solicitudes al servidor co
 
 Debido a que se dispone un servidor API gratis en render y éste solo puede cargar 512 Mb de memoria, se reduce el datasets para permitir que no ocupe toda la memoria gratis.<br>
 
-Acceso via url del deploy: https://......
+Acceso via url del deploy:<br>
+**https://pi-ml-ops-main-fastapi-linux.onrender.com**<br>
 
 `Se probaron las siguientes opciones para reducir el datasets`<br>
 
-    . Se quitaran todos los valores nulos que contiene el campo: belongs_to_collection
+    . Se quitaron todos los valores nulos que contiene el campo: belongs_to_collection
         Index: 2392
         Data columns (total 25 columns)
         LARG_moviesdataset_reducido.dropna(inplace=True)
 
-    . Se utilizará un dataframe, reduciendo el 60% de las filas de forma aleatoria
+    . Se utilizó un dataframe, reduciendo el 60% de las filas de forma aleatoria
         Index: 10306
         Data columns (total 25 columns)
         LARG_moviesdataset_reducido = LARG_moviesdataset_reducido.sample(frac=0.6, replace=True)
 
-    . Se utilizará un dataframe, reduciendo el 50% de las filas de forma aleatoria pero solo de las filas que tienen NaN en la columna belongs_to_collection
+    . Se utilizó un dataframe, reduciendo el 50% de las filas de forma aleatoria pero solo de las filas que tienen NaN en la columna belongs_to_collection
         a.- Se crea una mascara boolenan con las filas que tienen NaN en la columna belongs_to_collection
             Mask_LARG_moviesdataset_reducido = LARG_moviesdataset_reducido['belongs_to_collection'].isna()
             
@@ -584,7 +591,9 @@ Archivos y directorios no importantes para el deploy por lo que se ignoran al mo
 
 - - -
 
-# <h2 align=center> **ML -  Machine Learning** </h1>
+# <h1 align=center> **ML -  Machine Learning** </h1>
+
+## ML -  Machine Learning
 
 **`Modelo de evaluacion 1`**
 
@@ -593,12 +602,19 @@ wordcloud - Nubes de palabras
 Las nubes de palabras o nubes de etiquetas son representaciones gráficas de la frecuencia de las palabras que otorgan mayor protagonismo a las palabras que aparecen con mayor frecuencia en un texto de origen.<br>
 Se utiliza el dataset: `"./Datasets/LARG_moviesdataset_reducido_ml_sample_60.csv"`
 
-Se preparan el set de datos con los datos que se consideraron relevantes pata esta evaluacion:<br>
-. belongs_to_collection<br>
-. popularity<br>
-. vote_average<br>
-. budget<br>
-. revenue<br>
+
+#### Caso 1 recomendacion
+Utilizando 60% de los datos y las columnas:<br> 
+`belongs_to_collection, popularity, vote_average, budget, revenue`
+
+Se preparan el set de datos con variables categóricas y numéricas con los datos que se consideraron relevantes pata este caso:<br>
+. categóricas
+    . belongs_to_collection<br>
+. numéricas
+    . popularity<br>
+    . vote_average<br>
+    . budget<br>
+    . revenue<br>
 
 - Se concatenan en una sola variable de tipo string y se crea una nueva columna en el dataset llamada: 'columnas_concatenadas'<br>
 - Con la columna concatenada 'columnas_concatenadas' se crea un vector para realizar el calculo de similitud.<br>
@@ -608,6 +624,43 @@ Se preparan el set de datos con los datos que se consideraron relevantes pata es
 - Se ordena por scores similares
 - Retornando los 5 primeros elementos, los cuales seran las peliculas recomendadas.
 
-Por ejemplo:<br>
-`Recomendaciones para 'Conquest of Space':`<br>
-`['Conquest of Space', 'Night of the Living Dead', 'The Company She Keeps', 'A Nightmare on Elm Street 5: The Dream Child', "My Sister's Keeper"]`
+Ejemplo:<br>
+url: `https://pi-ml-ops-main-fastapi-linux.onrender.com/get_recomendacion/Alone%20in%20the%20Dark`<br>
+[<br>
+"Georgia Rule",<br>
+"Kazaam",<br>
+"Hands of Stone",<br>
+"The Last Kiss",<br>
+"Steamboy"<br>
+]
+
+#### Caso 2 recomendacion
+Utilizando 60% de los datos y las columnas:<br> 
+`belongs_to_collection, popularity, genres, cast, vote_count`
+
+Se preparan el set de datos con variables categóricas y numéricas con los datos que se consideraron relevantes pata este caso:<br>
+. categóricas
+    . belongs_to_collection<br>
+    . genres<br>
+    . cast<br>
+. numéricas
+    . popularity<br>
+    . vote_count<br>
+
+- Se concatenan en una sola variable de tipo string y se crea una nueva columna en el dataset llamada: 'columnas_concatenadas'<br>
+- Con la columna concatenada 'columnas_concatenadas' se crea un vector para realizar el calculo de similitud.<br>
+- Se utiliza `CountVectorizer()` de la libreria sklearn esto permitira crear una matriz de cantidad de cada tokens.<br>
+- Se obtiene el indice del dataset ubicando el campo 'title'
+- cosine_sim
+- Se ordena por scores similares
+- Retornando los 5 primeros elementos, los cuales seran las peliculas recomendadas.
+
+Ejemplo:<br>
+url: `https://pi-ml-ops-main-fastapi-linux.onrender.com/get_recomendacion/Alone%20in%20the%20Dark`<br>
+[<br>
+"Georgia Rule",<br>
+"Kazaam",<br>
+"Hands of Stone",<br>
+"The Last Kiss",<br>
+"Steamboy"<br>
+]
