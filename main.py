@@ -13,7 +13,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 # Se importa el archivo 'LARG_moviesdataset_reducido.csv' con los datos de las peliculas,
 # este archivo ya contiene la data limpiada.
 
-ruta_archivo_movies = "./Datasets/LARG_moviesdataset_reducido_ml_sample_80.csv"
+ruta_archivo_movies = "./Datasets/LARG_moviesdataset_reducido_ml_sample_60.csv"
 LARG_moviesdataset_reducido = pd.read_csv(ruta_archivo_movies)
 
 # Se instancia una variable de tipo FastAPI
