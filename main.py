@@ -89,24 +89,36 @@ def productoras_exitosas(productora:str):
 # debiendo devolver el éxito del mismo medido a través del retorno. 
 # Además, deberá devolver el nombre de cada película con la fecha de lanzamiento, 
 # retorno individual, costo y ganancia de la misma, en formato lista.
+# @app.get('/get_director/{director}')
+# def get_director(director:str):
+#     try:
+#         lista = []
+#         for i, valor in enumerate(df_split_job):
+#             for j in range(len(valor)):
+#                 if valor[j] == 'Director':
+#                     if (df_split_crew[i][j] == director):
+#                         lista.append([df_split_crew[i][j], 
+#                                     LARG_moviesdataset_reducido['title'][i],
+#                                     LARG_moviesdataset_reducido['release_date'][i],
+#                                     round(LARG_moviesdataset_reducido['return'][i], 2),
+#                                     LARG_moviesdataset_reducido['budget'][i],
+#                                     LARG_moviesdataset_reducido['revenue'][i]])
+#     except (ValueError, SyntaxError):
+#         pass 
+#     return lista
+
 @app.get('/get_director/{director}')
 def get_director(director:str):
     try:
-        lista = []
-        for i, valor in enumerate(df_split_job):
-            for j in range(len(valor)):
-                if valor[j] == 'Director':
-                    if (df_split_crew[i][j] == director):
-                        lista.append([df_split_crew[i][j], 
-                                    LARG_moviesdataset_reducido['title'][i],
-                                    LARG_moviesdataset_reducido['release_date'][i],
-                                    round(LARG_moviesdataset_reducido['return'][i], 2),
-                                    LARG_moviesdataset_reducido['budget'][i],
-                                    LARG_moviesdataset_reducido['revenue'][i]])
+        df_Director = df_movies_des[df_movies_des['crew'].str.contains(director)]   
+        Peliculas_del_Director = df_Director[['title', 'release_year', 'revenue', 'budget']]
+        retorno_total_director = (Peliculas_del_Director['revenue'].sum() / Peliculas_del_Director['budget'].sum())
+        Lista_De_Dicc = Peliculas_del_Director.to_dict('records')        
     except (ValueError, SyntaxError):
         pass 
-    return lista
+    return {'Nombre Director':director, 'Relacion de retorno':retorno_total_director, 'Peliculas Dirigidas':Lista_De_Dicc}
 
+# Modelo de recomendacion
 # Preprocesamiento de datos
 # Convertir columnas relevantes en una sola columna para calcular la similitud.
 # Se trabajara con los datos de las columnas: belongs_to_collection, popularity, vote_average, budget, revenue

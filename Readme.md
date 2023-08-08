@@ -17,6 +17,11 @@ pip                 21.3.1<br>
 seaborn             0.11.2<br>
 sklearn             0.0.post1<br>
 uvicorn             0.16.0<br>
+
+Deploy render:<br>
+https://pi-ml-ops-main-fastapi-linux.onrender.com<br>
+https://pi-ml-ops-main-fastapi-linux.onrender.com/docs
+
 - - -
 # <h1 align=center> **PROYECTO INDIVIDUAL Nº1** </h1>
 
