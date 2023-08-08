@@ -111,7 +111,7 @@ def get_director(director:str):
         retorno_total_director = 0
         if(Peliculas_del_Director['budget'].sum() != 0):
             retorno_total_director = (Peliculas_del_Director['revenue'].sum() / Peliculas_del_Director['budget'].sum())
-        Lista_De_Dicc = Peliculas_del_Director.to_dict('records')        
+        Lista_De_Dicc = Peliculas_del_Director.to_dict()        
     except (ValueError, SyntaxError):
         pass 
     return {'Nombre Director':director, 'Relacion de retorno':retorno_total_director, 'Peliculas Dirigidas':Lista_De_Dicc}
