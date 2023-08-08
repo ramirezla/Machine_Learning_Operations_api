@@ -10,7 +10,7 @@ from fastapi import FastAPI
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 
-# Se importa el archivo 'LARG_moviesdataset_reducido.csv' con los datos de las peliculas,
+# Se importa el archivo 'LARG_moviesdataset_reducido_ml_sample_60.csv' con los datos de las peliculas,
 # este archivo ya contiene la data limpiada.
 
 ruta_archivo_movies = "./Datasets/LARG_moviesdataset_reducido_ml_sample_60.csv"
@@ -22,8 +22,6 @@ app = FastAPI(title='PI_ML_OPS-main', description='Luis A Ramirez G')
 # def peliculas_idioma( Idioma: str ): 
 # Se ingresa un idioma (como están escritos en el dataset, no hay que traducirlos!). 
 # Debe devolver la cantidad de películas producidas en ese idioma.
-df_split_job = LARG_moviesdataset_reducido['job'].str.split(',')
-df_split_crew = LARG_moviesdataset_reducido['crew'].str.split(',')
 @app.get('/peliculas_idioma/{idioma}')
 def peliculas_idioma(idioma:str):
     try:
@@ -80,6 +78,8 @@ def productoras_exitosas(productora:str):
         pass 
     return {'Productora':productora, 'Total ingresos': total_revenue,'Cantidad de peliculas':cantidad_peliculas}
 
+# df_split_job = LARG_moviesdataset_reducido['job'].str.split(',')
+# df_split_crew = LARG_moviesdataset_reducido['crew'].str.split(',')
 # def get_director( nombre_director ): 
 # Se ingresa el nombre de un director que se encuentre dentro de un dataset 
 # debiendo devolver el éxito del mismo medido a través del retorno. 
