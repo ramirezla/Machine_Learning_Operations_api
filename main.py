@@ -13,12 +13,8 @@ from sklearn.feature_extraction.text import CountVectorizer
 # Se importa el archivo 'LARG_moviesdataset_reducido.csv' con los datos de las peliculas,
 # este archivo ya contiene la data limpiada.
 
-ruta_archivo_movies = "./Datasets/LARG_moviesdataset_reducido_ml_sample_60.csv"
-#ruta_archivo_movies = "./Datasets/LARG_moviesdataset_reducido.csv"
+ruta_archivo_movies = "./Datasets/LARG_moviesdataset_reducido_ml_sample_80.csv"
 LARG_moviesdataset_reducido = pd.read_csv(ruta_archivo_movies)
-
-#ruta_archivo_movies_ml = "./Datasets/LARG_moviesdataset_reducido_ml_sample_mask.csv"
-#LARG_moviesdataset_reducido_ml = pd.read_csv(ruta_archivo_movies_ml)
 
 # Se instancia una variable de tipo FastAPI
 app = FastAPI(title='PI_ML_OPS-main', description='Luis A Ramirez G')
@@ -112,7 +108,9 @@ def get_director(director:str):
     try:
         df_Director = df_movies_des[df_movies_des['crew'].str.contains(director)]   
         Peliculas_del_Director = df_Director[['title', 'release_year', 'revenue', 'budget']]
-        retorno_total_director = (Peliculas_del_Director['revenue'].sum() / Peliculas_del_Director['budget'].sum())
+        retorno_total_director = 0
+        if(Peliculas_del_Director['budget'].sum() != 0):
+            retorno_total_director = (Peliculas_del_Director['revenue'].sum() / Peliculas_del_Director['budget'].sum())
         Lista_De_Dicc = Peliculas_del_Director.to_dict('records')        
     except (ValueError, SyntaxError):
         pass 
