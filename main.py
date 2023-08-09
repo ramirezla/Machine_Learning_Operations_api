@@ -10,9 +10,6 @@ from fastapi import FastAPI
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 
-# Se importa el archivo 'LARG_moviesdataset_reducido_ml_sample_60.csv' con los datos de las peliculas,
-# este archivo ya contiene la data limpiada.
-
 # ruta_archivo_movies = "./Datasets/LARG_moviesdataset_reducido_ml_sample_50.csv"
 # ruta_archivo_movies = "./Datasets/LARG_moviesdataset_reducido.csv"
 ruta_archivo_movies = "./Datasets/LARG_moviesdtaset_full.csv"
@@ -112,23 +109,6 @@ def get_director(director:str):
 # Se trabajara con los datos de las columnas: belongs_to_collection, popularity, genres, cast, vote_count
 # del LARG_moviesdataset_reducido
 # LARG_moviesdataset_reducido['columnas_concatenadas'] = LARG_moviesdataset_reducido['popularity'].astype(str) + ' ' + LARG_moviesdataset_reducido['genres'].astype(str) + ' ' + LARG_moviesdataset_reducido['cast'].astype(str) + ' ' + LARG_moviesdataset_reducido['vote_count'].astype(str)
-
-# Se crea un vector para realizar el calculo de similitud
-# count_vectorizer = CountVectorizer()
-# count_matrix = count_vectorizer.fit_transform(LARG_moviesdataset_reducido['columnas_concatenadas'])
-# cosine_sim = cosine_similarity(count_matrix)
-
-# Se crea la Funcion para la recomendacion
-# @app.get('/get_recomendacion/{titulo}')
-# def get_recomendacion(titulo:str):
-#     try:
-#         index = LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'] == titulo].index[0]
-#         similar_scores = list(enumerate(cosine_sim[index]))
-#         similar_scores = sorted(similar_scores, key=lambda x: x[1], reverse=True)
-#         similar_movies = [LARG_moviesdataset_reducido.iloc[i[0]]['title'] for i in similar_scores[1:6]]
-#     except (ValueError, SyntaxError):
-#         pass 
-#     return similar_movies
 
 @app.get('/get_recomendacion/{titulo}')
 def get_recomendacion(pelicula:str):
