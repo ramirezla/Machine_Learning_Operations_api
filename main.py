@@ -31,7 +31,7 @@ def peliculas_idioma(idioma:str):
         cant_peliculas = int(valores['original_language'].count())
     except (ValueError, SyntaxError):
         pass 
-    return {'Idioma indicado':idioma, 'Cantidad encontrada': cant_peliculas}
+    return {'Idioma':idioma, 'Cantidad de peliculas': cant_peliculas}
 
 # def peliculas_duracion( Pelicula: str ): 
 # Se ingresa una pelicula. Debe devolver la duracion y el año.
@@ -42,7 +42,7 @@ def pelicula_duracion_anno(pelicula: str):
         anno = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'] == pelicula]['release_year'])   # Se cambia el tipo de dato a int para que Json no tenga problemas con el tipo int64
     except (ValueError, SyntaxError):
         pass 
-    return {'Nombre Pelicula':pelicula, 'Duracion en minutos':duracion_min, 'Año de estreno':anno}
+    return {'Pelicula':pelicula, 'Duracion en minutos':duracion_min, 'Año de estreno':anno}
 
 # def franquicia( Franquicia: str): 
 # Se ingresa la franquicia, retornando la cantidad de peliculas, ganancia total y promedio.
@@ -50,10 +50,10 @@ def pelicula_duracion_anno(pelicula: str):
 def franquicia_cant_gana_prom_peliculas(franquicia:str):
     try:
         cantidad_peliculas = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['belongs_to_collection'] == franquicia]['title'].count())
-        ganancia_total = float(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['belongs_to_collection'] == franquicia]['revenue'].sum())
+        ganancia_total = round(float(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['belongs_to_collection'] == franquicia]['revenue'].sum()),2)
         ganancia_promedio = 0
         if cantidad_peliculas != 0:
-            ganancia_promedio = float(ganancia_total/cantidad_peliculas)
+            ganancia_promedio = round(float(ganancia_total/cantidad_peliculas),2)
     except (ValueError, SyntaxError):
         pass 
     return {'Titulo franquicia':franquicia, 'Cantidad peliculas':cantidad_peliculas, 'Ganancia Total':ganancia_total, 'Promedio ganancia':ganancia_promedio}
@@ -95,7 +95,7 @@ def get_director(director:str):
         retorno_total_director = 0
         if(Peliculas_del_Director['budget'].sum() != 0):
             retorno_total_director = (Peliculas_del_Director['revenue'].sum() / Peliculas_del_Director['budget'].sum())
-        Lista_De_Dicc = Peliculas_del_Director.to_dict()        
+        Lista_De_Dicc = Peliculas_del_Director.to_numpy().tolist()       
     except (ValueError, SyntaxError):
         pass 
     return {'Nombre Director':director, 'Relacion de retorno':retorno_total_director, 'Peliculas Dirigidas':Lista_De_Dicc}
