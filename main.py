@@ -28,7 +28,8 @@ def peliculas_idioma(idioma:str):
         valores = LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['original_language'] == idioma]
         cant_peliculas = int(valores['original_language'].count())
     except (ValueError, SyntaxError):
-        pass 
+        #pass
+        print('No se encontro el idioma, error: ',error_except) 
     return {'Idioma':idioma, 'Cantidad de peliculas': cant_peliculas}
 
 # def peliculas_duracion( Pelicula: str ): 
@@ -138,4 +139,4 @@ def get_recomendacion(pelicula:str):
     # Obtener los títulos de las películas más similares
     similitudes_peliculas = LARG_moviesdataset_reducido.loc[similitudes_indices, 'title'].tolist()
 
-    return similitudes_peliculas    
+    return similitudes_peliculas
