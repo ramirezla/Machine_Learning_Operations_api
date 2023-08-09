@@ -112,6 +112,10 @@ def get_director(director:str):
 
 @app.get('/get_recomendacion/{titulo}')
 def get_recomendacion(pelicula:str):
+
+    # Se pone la pelicula como titulo, es decir, la primera letra de cada palabra en mayuscula, para evitar que falle si no lo escribe bien.
+    pelicula = pelicula.title()
+
     # Crear un objeto CountVectorizer para convertir las características en vectores
     vectorizer = CountVectorizer(analyzer='word', lowercase=True, token_pattern=r'\w+')
 
@@ -121,7 +125,7 @@ def get_recomendacion(pelicula:str):
     matrix_todas_caracteristicas = vectorizer.fit_transform(cadena_todas_caracteristicas)
 
     # Obtener las características de la película que le gustó al usuario
-    cadena_pelicula_caracteristicas = LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'] == pelicula, 'genres'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'] == pelicula, 'crew'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'] == pelicula, 'cast'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'] == pelicula, 'release_year'].iloc[0].astype(str)
+    cadena_pelicula_caracteristicas = LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'].str.title() == pelicula, 'genres'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'].str.title() == pelicula, 'crew'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'].str.title() == pelicula, 'cast'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'].str.title() == pelicula, 'release_year'].iloc[0].astype(str)
     # Obtener la matriz de documentos término-frecuencia (DTM) a partir de las características
     matrix_pelicula_caracteristica = vectorizer.transform([cadena_pelicula_caracteristicas])
 

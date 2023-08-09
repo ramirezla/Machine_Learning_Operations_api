@@ -696,4 +696,18 @@ Las caracteristicas que se estan considerando para este modelo son:<br>
 #### Se obtienen los titulos de las peliculas y se transforma en una lista
 `similitudes_peliculas = LARG_moviesdataset_reducido.loc[similitudes_indices, 'title'].tolist()`
 
-Ejemplo:
+Ejemplo:<br>
+Si vio la pelicula Jumanji y se desea que me recomiende 5 peliculas:<br>
+
+Se puede realizar el enlace siguiente:<br>
+
+`https://pi-ml-ops-main-fastapi-linux.onrender.com/get_recomendacion/{titulo}?pelicula=Jumanji`
+
+La respueste podria ser:<br>
+[<br>
+  "15 Minutes",<br>
+  "Dave",<br>
+  "Flight of the Navigator",<br>
+  "Patriot Games",<br>
+  "Sherlock Holmes"<br>
+]
