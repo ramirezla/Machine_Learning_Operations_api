@@ -14,7 +14,8 @@ from sklearn.feature_extraction.text import CountVectorizer
 # este archivo ya contiene la data limpiada.
 
 # ruta_archivo_movies = "./Datasets/LARG_moviesdataset_reducido_ml_sample_50.csv"
-ruta_archivo_movies = "./Datasets/LARG_moviesdataset_reducido.csv"
+# ruta_archivo_movies = "./Datasets/LARG_moviesdataset_reducido.csv"
+ruta_archivo_movies = "./Datasets/LARG_moviesdtaset_full.csv"
 
 LARG_moviesdataset_reducido = pd.read_csv(ruta_archivo_movies)
 
@@ -98,7 +99,7 @@ def get_director(director:str):
         Lista_De_Dicc = Peliculas_del_Director.to_numpy().tolist()       
     except (ValueError, SyntaxError):
         pass 
-    return {'Nombre Director':director, 'Relacion de retorno':retorno_total_director, 'Peliculas Dirigidas':Lista_De_Dicc}
+    return {'Nombre Director':director, 'Relacion de retorno':retorno_total_director, 'Pelicula, Año, Ingreso, Presupuesto':Lista_De_Dicc}
 
 # Modelo de recomendacion
 # Preprocesamiento de datos
