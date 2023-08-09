@@ -1,13 +1,42 @@
 ## Table of Contents
-1. [Informacion General](#informacion-general)
-2. [ETL - Extraction, Transformation and Loading](#etl---extraction-transformation-and-loading)<br>
-    2.1. [Diccionario de Datos movies_dataset](#diccionario-de-datos-movies_dataset)<br>
-    2.2. [Importando datasets: movies_dataset.csv](#1--importando-datasets-movies_datasetcsv)<br>
-    2.3. [Diccionario de Datos credits.csv](#diccionario-de-datos-credits)<br>
-    2.4. [Importando datasets: credits.csv](#1--importando-datasets-creditscsv)<br>
-3. [EDA - Exploratory Data Analysis](#eda---exploratory-data-analysis)
-4. [API -  Application Programming Interface](#api---application-programming-interface)
-5. [ML -  Machine Learning](#ml---machine-learning)
+- [Informacion General](#informacion-general)<br>
+- [ETL - Extraction, Transformation and Loading](#etl---extraction-transformation-and-loading)<br>
+    - [Transformaciones](#transformaciones)<br>
+    - [Archivos con los datos](#archivos-con-los-datos)<br>
+    - [Librerias](#librerias)<br>
+    - [Diccionario de Datos movies_dataset](#diccionario-de-datos-movies_dataset)<br>
+    - [Importando datasets: movies_dataset.csv](#1--importando-datasets-movies_datasetcsv)<br>
+        - [Información visual del set de datos](#información-visual-del-set-de-datos)<br>
+        - [Transformaciones: Trabajando con los Datos Numéricos](#2--transformaciones-trabajando-con-los-datos-numéricos)
+        - [Trabajando con los Datos Categóricos](#trabajando-con-los-datos-categóricos)
+        - [Trabajando con calculo de inversion](#trabajando-con-calculo-de-inversion)
+        - [Trabajando con los datos de tipo fechas](#trabajando-con-los-datos-de-tipo-fechas)
+        - [Eliminando columnas](#eliminando-columnas)
+    - [Diccionario de Datos credits.csv](#diccionario-de-datos-credits)<br>
+    - [Importando datasets: credits.csv](#1--importando-datasets-creditscsv)<br>
+        - [Información visual del set de datos credits](#información-visual-del-set-de-datos-credits)
+- [EDA - Exploratory Data Analysis](#eda---exploratory-data-analysis)
+    - [Análisis exploratorio de los datos](#análisis-exploratorio-de-los-datos)
+    - [Detectando outlies o valores extremos](#detectando-outlies-o-valores-extremos)
+    - [Diagrama BoxPlot](#diagrama-boxplot)
+    - [Diagrama Distribuciones](#diagrama-distribuciones)
+    - [Matrix de correlacion](#matrix-de-correlacion)
+- [API -  Application Programming Interface](#api---application-programming-interface)
+    - [Opciones para reducir el datasets](#opciones-para-reducir-el-datasets)
+    - [Contenido de los archivos para deploy](#contenido-de-los-archivos-para-deploy)
+        - [Funciones API](#funciones-api)
+            - [1.- Cantidad de peliculas según el idioma](#1--cantidad-de-peliculas-según-el-idioma)
+            - [2.- Tiempo de duracion y año de la pelicula](#2--tiempo-de-duracion-y-año-de-la-pelicula)
+            - [3.- Cantidad de peliculas producidas, la ganancia y el promedio por franquicia](#3--cantidad-de-peliculas-producidas-la-ganancia-y-el-promedio-por-franquicia)
+            - [4.- Cantidad de peliculas por pais](#4--cantidad-de-peliculas-por-pais)
+            - [5.- Cantidad de peliculas producida por productora](#5--cantidad-de-peliculas-producida-por-productora)
+            - [6.- Segun el Director sus peliculas dirigidas, costos y ganancias](#6--segun-el-director-sus-peliculas-dirigidas-costos-y-ganancias)
+- [ML -  Machine Learning](#ml---machine-learning)
+    - [Modelo de evaluacion: wordcloud - Nubes de palabras](#modelo-de-evaluacion-wordcloud---nubes-de-palabras)
+    - [Detalles de pasos para determinar las recomendaciones](#detalles-de-pasos-para-determinar-las-recomendaciones)
+    - [Caracteristicas utilizadas para recomendar](#caracteristicas-utilizadas-para-recomendar)
+    - [Secuencias de pasos](#secuencias-de-pasos)
+
 ***
 - - -
 ### Informacion General
@@ -54,7 +83,7 @@ Usuario: ramirezla<br>
 
 Se trata de entender o hacerse una idea general de los datos, observando las caracteristicas especiales de cada registro del set de datos.
 
-**`Transformaciones`**:
+#### Transformaciones:
 
 + Algunos campos, como **`belongs_to_collection`**, **`production_companies`** y otros (ver diccionario de datos) están anidados, esto es o bien tienen un diccionario o una lista como valores en cada fila, ¡deberán desanidarlos para poder  y unirlos al dataset de nuevo hacer alguna de las consultas de la API! O bien buscar la manera de acceder a esos datos sin desanidarlos.
 
@@ -70,7 +99,7 @@ Se trata de entender o hacerse una idea general de los datos, observando las car
 
 <br/>
 
-**`Archivos con los datos`**:
+#### Archivos con los datos:
 
 + [credits.csv](./Datasets/credits.csv)
 + [movies_dataset.csv](./Datasets/movies_dataset.csv)
@@ -162,7 +191,7 @@ Se trata de entender o hacerse una idea general de los datos, observando las car
 <img src="./src/CargaDelDatasets_info.jpg">
 </p>
 
-**`Información visual del set de datos:`**
+#### Información visual del set de datos:
 
 - Se tiene un total de 45466 filas y 24 columnas
 - budget: Se muestra como typo objeto y es numerico ya que almacena el presupuesto de la película, en dólares.
@@ -179,8 +208,7 @@ Se colocara el valor de 0 (cero) para los datos faltantes, nulos o vacios.
     - spoken_languages: Lista con los idiomas que se hablan en la pelicula.
     - - -
 
-    2.- **`Transformaciones`**.
-    **`Trabajando con los Datos Numéricos`**.
+#### 2.- Transformaciones: Trabajando con los Datos Numéricos.
 
 - budget
 - revenue
@@ -208,7 +236,7 @@ Se tiene todos los datos numericos iniciales en tipos numericos (float54):
 
 Cuando la std muestra que es diferente de 0, indica que tiene valores diferentes, entonces pareciera que esta bien.
 
-**`Trabajando con los Datos Categóricos`**.
+#### Trabajando con los Datos Categóricos
 
 **Datos tipo diccionario y listas**.
 
@@ -269,7 +297,7 @@ Se crean algunas funciones que exploran y extraen el valor de la clave, tanto pa
 - `4.- Valor_department_desde_list(value):`, esta funcion recibe (mediante aplicacion) el dataframe y la columna lista de diccionario, retorna el valor de la clave `'department'` o una cadena vacia si no cumple con la caracteristica de lista de diccionario.
 - `5.- def Valor_job_desde_list(value):`, esta funcion recibe (mediante aplicacion) el dataframe y la columna lista de diccionario, retorna el valor de la clave `'job'` o una cadena vacia si no cumple con la caracteristica de lista de diccionario.
 
-**`Trabajando con calculo de inversion`**.
+#### Trabajando con calculo de inversion
 
 **return = revenue / budget**
 
@@ -289,12 +317,12 @@ Se crea una fumcion lambda, donde retorna 0 si budget es 0, de lo contrario, ret
 | 81452156.0 | 16000000.0 | 5.090760 |
 | 76578911.0 | 0.0 | 0.000000 |
 
-**`Trabajando con los datos de tipo fechas`**.
+#### Trabajando con los datos de tipo fechas
 
 Para evitar problemas con este tipo de campo se tiene que verificar que realmentes sea de tipo fecha y en un formato manejable como puede ser: 'AAAA-mm-dd', debido a la importancia del valor no es conveniente tener campos con valores nulos o faltantes.
 En nuestro caso de estudio se creará otra columna con el año de la fecha para su facil acceso, este campo será de tipo int64 (sin decimale)
 
-**`Eliminando columnas`**.
+#### Eliminando columnas
 
 **video, imdb_id, adult, original_title, poster_path y homepage**
 
@@ -314,7 +342,7 @@ Porcentaje de datos nulos:  55.05 %
 - - -
 #### 1.- Importando datasets: credits.csv.
 
-**`Información visual del set de datos:`**
+#### Información visual del set de datos credits
 
 - Se tiene un total de 45476 filas y 3 columnas
 - cast: Se muestra como typo objeto.
@@ -359,7 +387,7 @@ Se reutiliza ajustando la funcion: Valor_department_desde_list y Valor_job_desde
 
 ## EDA - Exploratory Data Analysis
 
-**`Análisis exploratorio de los datos`**
+#### Análisis exploratorio de los datos
 
 + Se investiga las relaciones que hay entre las variables de los datasets y si hay outliers o anomalías (no neceariamente son errores, por lo que pueden llegar a ser necesarios para el amalisis)
 + Se investiga si hay algún patrón que nos ayude en el análisis.
@@ -412,7 +440,7 @@ Se puede hacer una descripcion de los datos tipos numéricos.
 
 Cuando la std muestra que es diferente de 0, indica que tiene valores diferentes, entonces pareciera que esta bien.
 
-**`Detectando outlies o valores extremos`**
+#### Detectando outlies o valores extremos
 
 Conteo de los niveles en las diferentes columnas categoricas para las que se tienen idea, por ejemplo: si es sexo deberia tener 2 categorias hombre o mujer (por ahora).
 si es estado civil puede haber soltero, casado, divorciado, otros, etc.
@@ -446,7 +474,8 @@ Con esto podemos determinar si alguna tiene una sola cetegoria, entonces, nos in
 | Columna job: | 13854 subniveles |
 | Columna crew: | 17101 subniveles |
 
-#### Realizando un diagrama BoxPlot<br>
+#### Diagrama BoxPlot
+
 El Diagrama de Caja y bigotes (box and whisker plot en inglés) es un tipo de gráfico que muestra un resumen de una gran cantidad de datos en cinco medidas descriptivas, además de intuir su morfología y simetría. Este tipo de gráficos nos permiten visualizar y comparar la distribución y la tendencia central de valores numéricos mediante sus cuartiles.
 
 Verificar si hay outlies o valores extremos, se debe decidir si se eliminan o se mantienen, eso depende de lo que deseamos.
@@ -455,18 +484,24 @@ Se realiza un grafico tipo boxplot de las variables numericas, en él podemos ve
 <p align="center">
 <img src="./src/outlies_01.png">
 </p>
+<br>
 
+#### Diagrama Distribuciones
+
+<br>
 <p align="center">
 <img src="./src/distribuciones_01.png">
 </p>
+<br>
 
-Observando la matrix de correlacion.
+#### Matrix de correlacion.
 
 <p align="center">
 <img src="./src/correlacion_01.png">
 </p>
 
-Se realiza un grafico de barras mostrando la cantidad de generos por peliculas, solo para observar que la mayor cantidad de peliculas creadas entre 1896 al 2017 han sido las de Drama.
+Grafico de barras (solamente informativo) donde se muestra la cantidad de generos por peliculas. <br>
+En este grafico se observa que la mayor cantidad de peliculas creadas entre 1896 al 2017 han sido las de Drama.
 
 <p align="center">
 <img src="./src/grafico_bar_generos.jpg">
@@ -491,7 +526,7 @@ Debido a que se dispone un servidor API gratis en render y éste solo puede carg
 Acceso via url del deploy:<br>
 **https://pi-ml-ops-main-fastapi-linux.onrender.com**<br>
 
-`Se probaron las siguientes opciones para reducir el datasets`<br>
+#### Opciones para reducir el datasets
 
     . Se quitaron todos los valores nulos que contiene el campo: belongs_to_collection
         Index: 2392
@@ -510,10 +545,6 @@ Acceso via url del deploy:<br>
         b.- Aplico el sample, pero colocando el peso de la mascara
             LARG_moviesdataset_reducido = LARG_moviesdataset_reducido.sample(frac=0.6, weights=Mask_LARG_moviesdataset_reducido)
 
-
-`Para continuidad del ejercicio se trabaja con los datos del dataset "./Datasets/LARG_moviesdataset_reducido_ml_sample_60.csv"<br>
-Para esto se utilizo la funcion sample() con frac=0.6, con esto se le indica que deje el 60% de los datos del dataset y el 40% sea eliminado de forma aleatoria.`
-
 Se crea un ambiente virtual para encapsular lo necesario para las API y de este modo hacer el deploy en render lo mas limpio posible.
 
 Archivos y directoios importantes para realizar el deploy en render:
@@ -527,7 +558,9 @@ Archivos y directorios no importantes para el deploy por lo que se ignoran al mo
     . '.gitignore' Archivo que le indica al github que al momento de hacer un 'git add .' los ignore, por lo que al hacer el push no sera subido al repositorio.
     . 'env' Directorio donde se guarda la configuracion del ambiente virtual creado localmente, este directorio sera ignorado y no sera subido al repositorio.
 
-`Contenido de los archivos:`<br>
+#### Funciones API.
+
+#### Contenido de los archivos para deploy
 
 - `requirements.txt`<br>
     fastapi==0.93.0<br>
@@ -539,7 +572,7 @@ Archivos y directorios no importantes para el deploy por lo que se ignoran al mo
     scikit-learn==1.0.2<br>
 
 - `main.py`<br>
-    - 1.- Cantidad de peliculas según el idioma.
+    - #### 1.- Cantidad de peliculas según el idioma.
         - Nombre de la API: `def peliculas_idioma(Idioma: str)`
         - Datos de entrada: Se ingresa un idioma (como están escritos en el dataset, sin traducirlos), tipo string.<br>
             - Ejemplo: `es` -> Español | `en` -> Inglés | `fr` -> Frances
@@ -547,7 +580,7 @@ Archivos y directorios no importantes para el deploy por lo que se ignoran al mo
         - Informacion que retorna: Debe devolver la cantidad de películas producidas en ese idioma.<br>
             - Ejemplo: `{'Idioma indicado': 'en', 'Cantidad encontrada': 9040}`
         <br><br>
-    - 2.- Tiempo de duracion y año de la pelicula.
+    - #### 2.- Tiempo de duracion y año de la pelicula.
         - Nombre de la API: `def pelicula_duracion_anno(pelicula: str)`
         - Datos de entrada: Se ingresa una pelicula, tipo string.
             - Ejemplo: `Toy Story, Jumanji, Grumpier Old Men, Waiting to Exhale, Father of the Bride Part II`
@@ -555,7 +588,7 @@ Archivos y directorios no importantes para el deploy por lo que se ignoran al mo
         - Informacion que retorna: Debe devolver el tiempo de duracion y el año de la pelicula.
             - Ejemplo: `{'Nombre Pelicula': 'Jumanji', 'Duracion en minutos': 8183, 'Año de estreno': 8183}`
         <br><br>
-    - 3.- Cantidad de peliculas producidas, la ganancia y el promedio por franquicia.
+    - #### 3.- Cantidad de peliculas producidas, la ganancia y el promedio por franquicia.
         - Nombre de la API: `def franquicia_cant_gana_prom_peliculas(franquicia: str)`
         - Datos de entrada: Se ingresa la franquicia, tipo string.
             - Ejemplo: `James Bond, Toy Story, Living Dead, A Nightmare on Elm Street, Beverly Hills Chihuahua`
@@ -563,7 +596,7 @@ Archivos y directorios no importantes para el deploy por lo que se ignoran al mo
         - Informacion que retorna: Debe devolver la cantidad de peliculas, ganancia total y promedio por la franquicia.
             - Ejemplo: `{'Titulo franquicia': 'Living Dead', 'Cantidad peliculas': 10, 'Ganancia Total': 260364858.0, 'Promedio ganancia': 26036485.8}`
         <br><br> 
-    - 4.- Cantidad de peliculas por pais.
+    - #### 4.- Cantidad de peliculas por pais.
         - Nombre de la API: `def peliculas_pais(pais: str)`
         - Datos de entrada: Se ingresa un país (como están escritos en el dataset, sin traducirlo), tipo string.
             - Ejemplo: `United States of America, Canada, Spain, China,	Russia, Germany, Australia, United Kingdom`
@@ -571,7 +604,7 @@ Archivos y directorios no importantes para el deploy por lo que se ignoran al mo
         - Informacion que retorna: Retorna la cantidad de peliculas producidas en pais.
             - Ejemplo: `{'Titulo franquicia': 'Living Dead', 'Cantidad peliculas': 10, 'Ganancia Total': 260364858.0, 'Promedio ganancia': 26036485.8}`
         <br><br> 
-    - 5.- Cantidad de peliculas producida por productora.
+    - #### 5.- Cantidad de peliculas producida por productora.
         - Nombre de la API: `def productoras_exitosas(productora: str)`
         - Datos de entrada: Se ingresa la productora, tipo string.
             - Ejemplo: `Paramount Pictures,	Laurel Group, Gran Via Productions, Metro-Goldwyn-Mayer (MGM), Safir Films, Walt Disney Pictures, Republic Pictures, Warner Bros., Rysher Entertainment, Marvista Entertainment, Feifer Worldwide`
@@ -579,9 +612,11 @@ Archivos y directorios no importantes para el deploy por lo que se ignoran al mo
         - Informacion que retorna: Retorna el total y la cantidad de peliculas que realizo..
             - Ejemplo: `{'Productora': 'Walt Disney Pictures', 'Total ingresos': 3367407539.0, 'Cantidad de peliculas': 38}`
         <br><br> 
-    - 6.- Cantidad de peliculas producida por productora.
+    - #### 6.- Segun el Director sus peliculas dirigidas, costos y ganancias.
         - Nombre de la API: `def get_director(director: str)`
-        - Datos de entrada: Se ingresa el nombre de un director, tipo string.
+        - Datos de entrada: Se ingresa el nombre de un di<p align="center">
+<img src="./src/grafico_bar_generos.jpg">
+</p>rector, tipo string.
             - Ejemplo: `Forest Whitaker, John Lasseter, Howard Deutch`
         - Uso: `https://.../get_director/{Howard Deutch}`
         - Informacion que retorna: Retorna el éxito del mismo medido a través del retorno, demás, deberá devolver el nombre de cada película con la fecha de lanzamiento, retorno individual, costo y ganancia de la misma, en formato lista.
@@ -595,72 +630,70 @@ Archivos y directorios no importantes para el deploy por lo que se ignoran al mo
 
 ## ML -  Machine Learning
 
-**`Modelo de evaluacion 1`**
-
-wordcloud - Nubes de palabras
+### Modelo de evaluacion: wordcloud - Nubes de palabras
 
 Las nubes de palabras o nubes de etiquetas son representaciones gráficas de la frecuencia de las palabras que otorgan mayor protagonismo a las palabras que aparecen con mayor frecuencia en un texto de origen.<br>
-Se utiliza el dataset: `"./Datasets/LARG_moviesdataset_reducido_ml_sample_60.csv"`
+Se utiliza el dataset: `"./Datasets/LARG_moviesdtaset_full.csv"`<br>
 
+#### Librerias utilizadas
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
-### Caso 1 recomendacion
-Utilizando 50% de los datos y las columnas:<br> 
-`belongs_to_collection, popularity, vote_average, budget, revenue`
+#### Datasets a trabajar
+ruta_archivo_movies = "./Datasets/LARG_moviesdtaset_full.csv"
+LARG_moviesdataset_reducido = pd.read_csv(ruta_archivo_movies)
+LARG_moviesdataset_reducido.drop('Unnamed: 0', axis=1, inplace=True)
 
-Se preparan el set de datos con variables categóricas y numéricas con los datos que se consideraron relevantes pata este caso:<br>
-- categóricas
-    - belongs_to_collection<br>
-- numéricas
-    - popularity<br>
-    - vote_average<br>
-    - budget<br>
-    - revenue<br>
+Este datasets, contiene 45369 Filas y 26 Columnas, sin valores nulos pero si con valores en en blancos de algunos campos Categóricos.
+
+<p align="center">
+<img src="./src/ML_info_01.png">
+</p>
 <br>
-- Se concatenan en una sola variable de tipo string y se crea una nueva columna en el dataset llamada: 'columnas_concatenadas'<br>
-- Con la columna concatenada 'columnas_concatenadas' se crea un vector para realizar el calculo de similitud.<br>
-- Se utiliza `CountVectorizer()` de la libreria sklearn esto permitira crear una matriz de cantidad de cada tokens.<br>
-- Se obtiene el indice del dataset ubicando el campo 'title'
-- cosine_sim
-- Se ordena por scores similares
-- Retornando los 5 primeros elementos, los cuales seran las peliculas recomendadas.
+<p align="center">
+<img src="./src/ML_info_02.png">
+</p>
 <br>
-Ejemplo: Alone in the Dark<br>
-url: `https://pi-ml-ops-main-fastapi-linux.onrender.com/get_recomendacion/Alone%20in%20the%20Dark`<br>
-[<br>
-"Georgia Rule",<br>
-"Kazaam",<br>
-"Hands of Stone",<br>
-"The Last Kiss",<br>
-"Steamboy"<br>
-]
 
-### Caso 2 recomendacion
-Utilizando 60% de los datos y las columnas:<br> 
-`belongs_to_collection, popularity, genres, cast, vote_count`
+### Detalles de pasos para determinar las recomendaciones:
+Para obtener las recomendaciones, se basa el algoritmo en utilizar caracteristicas particulares de la pelicula que desea y se compara con las caracteristicas del resto de peliculas.<br>
+Las caracteristicas que se estan considerando para este modelo son:<br>
 
-Se preparan el set de datos con variables categóricas y numéricas con los datos que se consideraron relevantes pata este caso:<br>
-- categóricas
-    - belongs_to_collection<br>
-    - genres<br>
-    - cast<br>
-- numéricas
-    - popularity<br>
-    - vote_count<br>
-<br>
-- Se concatenan en una sola variable de tipo string y se crea una nueva columna en el dataset llamada: 'columnas_concatenadas'<br>
-- Con la columna concatenada 'columnas_concatenadas' se crea un vector para realizar el calculo de similitud.<br>
-- Se utiliza `CountVectorizer()` de la libreria sklearn esto permitira crear una matriz de cantidad de cada tokens.<br>
-- Se obtiene el indice del dataset ubicando el campo 'title'
-- cosine_similarity busca las similitudes entre dos vectores
-- Se ordena por scores similares
-- Retornando los 5 primeros elementos, los cuales seran las peliculas recomendadas.
-<br>
-Ejemplo: Blue Streak<br>
-url: `https://pi-ml-ops-main-fastapi-linux.onrender.com/get_recomendacion/Blue%20Streak`<br>
-[<br>
-"The Adventures of Buckaroo Banzai Across the 8th Dimension",<br>
-"Sands of Iwo Jima",<br>
-"Tombstone",<br>
-"RoboCop 2",<br>
-"RoboCop 2"<br>
-]
+#### Caracteristicas utilizadas para recomendar
+
+- 1.- Por su importancia que la gran mayoria de las personas (incluyendome) les da al momento de ver una pelicula.
+- 2.- Por la falta de recursos, esto debido a que la cantidad de memoria que nos permite la capa gratis de render.com es de 512Mb, por lo que, al momento de comenzar a realizar el deploy de la información es cuando se consume la memoria fisica y si pasa del consumo, entonces, no permitira el deploy de las API.
+
+| Característica | Descripción |
+| --------- | --------- |
+| genres | Un diccionario que indica todos los géneros asociados a la película |
+| cast | Corresponde a todos los protagonistas |
+| crew | Corresponde a todo el personal fuera de escenas |
+| release_year | Año de estreno de la película |
+
+#### Secuencias de pasos
+
+#### Para convertir la cadena a evaluar se necesita un objeto de tipo vector (CountVectorizer)
+`vectorizer = CountVectorizer(analyzer='word', lowercase=True, token_pattern=r'\w+')`
+
+#### Se unen en una sola cadena cada una de las caracteristicas que deseo evaluar, es importante que todos sean de tipo cadena (str) para que puedan ser concatenadas
+`cadena_todas_caracteristicas = LARG_moviesdataset_reducido['genres'].fillna('') + ' ' + LARG_moviesdataset_reducido['crew'].astype(str) + ' ' + LARG_moviesdataset_reducido['cast'].astype(str) + ' ' + LARG_moviesdataset_reducido['release_year'].astype(str)`
+#### Se obtiene la matriz de documentos término-frecuencia (DTM) a partir de las cadena de caracteriscticas.
+`matrix_todas_caracteristicas = vectorizer.fit_transform(cadena_todas_caracteristicas)`
+
+#### Se une las caracterìsticas correspondiente a la pelicula que se desea usar para encontrar las recomendaciones.
+`cadena_pelicula_caracteristicas = LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'] == pelicula, 'genres'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'] == pelicula, 'crew'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'] == pelicula, 'cast'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'] == pelicula, 'release_year'].iloc[0].astype(str)`
+#### Obtener la matriz de documentos término-frecuencia (DTM) a partir de las características
+`matrix_pelicula_caracteristica = vectorizer.transform([cadena_pelicula_caracteristicas])`
+
+#### Calcular la similitud del coseno entre la película que le gustó al usuario y todas las demás películas
+`similitudes = cosine_similarity(matrix_pelicula_caracteristica, matrix_todas_caracteristicas)`
+
+#### Se obtiene los indices de las películas similares
+`similitudes_indices = similitudes.argsort()[0][-6:-1]`
+
+#### Se obtienen los titulos de las peliculas y se transforma en una lista
+`similitudes_peliculas = LARG_moviesdataset_reducido.loc[similitudes_indices, 'title'].tolist()`
+
+Ejemplo:
