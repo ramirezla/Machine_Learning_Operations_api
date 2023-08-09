@@ -603,19 +603,19 @@ Las nubes de palabras o nubes de etiquetas son representaciones gráficas de la 
 Se utiliza el dataset: `"./Datasets/LARG_moviesdataset_reducido_ml_sample_60.csv"`
 
 
-#### Caso 1 recomendacion
-Utilizando 60% de los datos y las columnas:<br> 
+### Caso 1 recomendacion
+Utilizando 50% de los datos y las columnas:<br> 
 `belongs_to_collection, popularity, vote_average, budget, revenue`
 
 Se preparan el set de datos con variables categóricas y numéricas con los datos que se consideraron relevantes pata este caso:<br>
-. categóricas
-    . belongs_to_collection<br>
-. numéricas
-    . popularity<br>
-    . vote_average<br>
-    . budget<br>
-    . revenue<br>
-
+- categóricas
+    - belongs_to_collection<br>
+- numéricas
+    - popularity<br>
+    - vote_average<br>
+    - budget<br>
+    - revenue<br>
+<br>
 - Se concatenan en una sola variable de tipo string y se crea una nueva columna en el dataset llamada: 'columnas_concatenadas'<br>
 - Con la columna concatenada 'columnas_concatenadas' se crea un vector para realizar el calculo de similitud.<br>
 - Se utiliza `CountVectorizer()` de la libreria sklearn esto permitira crear una matriz de cantidad de cada tokens.<br>
@@ -623,8 +623,8 @@ Se preparan el set de datos con variables categóricas y numéricas con los dato
 - cosine_sim
 - Se ordena por scores similares
 - Retornando los 5 primeros elementos, los cuales seran las peliculas recomendadas.
-
-Ejemplo:<br>
+<br>
+Ejemplo: Alone in the Dark<br>
 url: `https://pi-ml-ops-main-fastapi-linux.onrender.com/get_recomendacion/Alone%20in%20the%20Dark`<br>
 [<br>
 "Georgia Rule",<br>
@@ -634,19 +634,19 @@ url: `https://pi-ml-ops-main-fastapi-linux.onrender.com/get_recomendacion/Alone%
 "Steamboy"<br>
 ]
 
-#### Caso 2 recomendacion
+### Caso 2 recomendacion
 Utilizando 60% de los datos y las columnas:<br> 
 `belongs_to_collection, popularity, genres, cast, vote_count`
 
 Se preparan el set de datos con variables categóricas y numéricas con los datos que se consideraron relevantes pata este caso:<br>
-. categóricas
-    . belongs_to_collection<br>
-    . genres<br>
-    . cast<br>
-. numéricas
-    . popularity<br>
-    . vote_count<br>
-
+- categóricas
+    - belongs_to_collection<br>
+    - genres<br>
+    - cast<br>
+- numéricas
+    - popularity<br>
+    - vote_count<br>
+<br>
 - Se concatenan en una sola variable de tipo string y se crea una nueva columna en el dataset llamada: 'columnas_concatenadas'<br>
 - Con la columna concatenada 'columnas_concatenadas' se crea un vector para realizar el calculo de similitud.<br>
 - Se utiliza `CountVectorizer()` de la libreria sklearn esto permitira crear una matriz de cantidad de cada tokens.<br>
@@ -654,13 +654,13 @@ Se preparan el set de datos con variables categóricas y numéricas con los dato
 - cosine_similarity busca las similitudes entre dos vectores
 - Se ordena por scores similares
 - Retornando los 5 primeros elementos, los cuales seran las peliculas recomendadas.
-
-Ejemplo:<br>
-url: `https://pi-ml-ops-main-fastapi-linux.onrender.com/get_recomendacion/Alone%20in%20the%20Dark`<br>
+<br>
+Ejemplo: Blue Streak<br>
+url: `https://pi-ml-ops-main-fastapi-linux.onrender.com/get_recomendacion/Blue%20Streak`<br>
 [<br>
-"Georgia Rule",<br>
-"Kazaam",<br>
-"Hands of Stone",<br>
-"The Last Kiss",<br>
-"Steamboy"<br>
+"The Adventures of Buckaroo Banzai Across the 8th Dimension",<br>
+"Sands of Iwo Jima",<br>
+"Tombstone",<br>
+"RoboCop 2",<br>
+"RoboCop 2"<br>
 ]

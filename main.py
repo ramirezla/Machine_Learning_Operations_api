@@ -13,7 +13,9 @@ from sklearn.feature_extraction.text import CountVectorizer
 # Se importa el archivo 'LARG_moviesdataset_reducido_ml_sample_60.csv' con los datos de las peliculas,
 # este archivo ya contiene la data limpiada.
 
-ruta_archivo_movies = "./Datasets/LARG_moviesdataset_reducido_ml_sample_50.csv"
+# ruta_archivo_movies = "./Datasets/LARG_moviesdataset_reducido_ml_sample_50.csv"
+ruta_archivo_movies = "./Datasets/LARG_moviesdataset_reducido.csv"
+
 LARG_moviesdataset_reducido = pd.read_csv(ruta_archivo_movies)
 
 # Se instancia una variable de tipo FastAPI
@@ -108,21 +110,47 @@ def get_director(director:str):
 
 # Se trabajara con los datos de las columnas: belongs_to_collection, popularity, genres, cast, vote_count
 # del LARG_moviesdataset_reducido
-LARG_moviesdataset_reducido['columnas_concatenadas'] = LARG_moviesdataset_reducido['popularity'].astype(str) + ' ' + LARG_moviesdataset_reducido['genres'].astype(str) + ' ' + LARG_moviesdataset_reducido['cast'].astype(str) + ' ' + LARG_moviesdataset_reducido['vote_count'].astype(str)
+# LARG_moviesdataset_reducido['columnas_concatenadas'] = LARG_moviesdataset_reducido['popularity'].astype(str) + ' ' + LARG_moviesdataset_reducido['genres'].astype(str) + ' ' + LARG_moviesdataset_reducido['cast'].astype(str) + ' ' + LARG_moviesdataset_reducido['vote_count'].astype(str)
 
 # Se crea un vector para realizar el calculo de similitud
-count_vectorizer = CountVectorizer()
-count_matrix = count_vectorizer.fit_transform(LARG_moviesdataset_reducido['columnas_concatenadas'])
-cosine_sim = cosine_similarity(count_matrix)
+# count_vectorizer = CountVectorizer()
+# count_matrix = count_vectorizer.fit_transform(LARG_moviesdataset_reducido['columnas_concatenadas'])
+# cosine_sim = cosine_similarity(count_matrix)
 
 # Se crea la Funcion para la recomendacion
+# @app.get('/get_recomendacion/{titulo}')
+# def get_recomendacion(titulo:str):
+#     try:
+#         index = LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'] == titulo].index[0]
+#         similar_scores = list(enumerate(cosine_sim[index]))
+#         similar_scores = sorted(similar_scores, key=lambda x: x[1], reverse=True)
+#         similar_movies = [LARG_moviesdataset_reducido.iloc[i[0]]['title'] for i in similar_scores[1:6]]
+#     except (ValueError, SyntaxError):
+#         pass 
+#     return similar_movies
+
 @app.get('/get_recomendacion/{titulo}')
-def get_recomendacion(titulo:str):
-    try:
-        index = LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'] == titulo].index[0]
-        similar_scores = list(enumerate(cosine_sim[index]))
-        similar_scores = sorted(similar_scores, key=lambda x: x[1], reverse=True)
-        similar_movies = [LARG_moviesdataset_reducido.iloc[i[0]]['title'] for i in similar_scores[1:6]]
-    except (ValueError, SyntaxError):
-        pass 
-    return similar_movies
+def get_recomendacion(pelicula:str):
+    # Crear un objeto CountVectorizer para convertir las características en vectores
+    vectorizer = CountVectorizer(analyzer='word', lowercase=True, token_pattern=r'\w+')
+
+    # Concatena todas las caracteristicas que deseo evaluar
+    cadena_todas_caracteristicas = LARG_moviesdataset_reducido['genres'].fillna('') + ' ' + LARG_moviesdataset_reducido['crew'].astype(str) + ' ' + LARG_moviesdataset_reducido['cast'].astype(str) + ' ' + LARG_moviesdataset_reducido['release_year'].astype(str)
+    # Obtener la matriz de documentos término-frecuencia (DTM) a partir de las características
+    matrix_todas_caracteristicas = vectorizer.fit_transform(cadena_todas_caracteristicas)
+
+    # Obtener las características de la película que le gustó al usuario
+    cadena_pelicula_caracteristicas = LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'] == pelicula, 'genres'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'] == pelicula, 'crew'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'] == pelicula, 'cast'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'] == pelicula, 'release_year'].iloc[0].astype(str)
+    # Obtener la matriz de documentos término-frecuencia (DTM) a partir de las características
+    matrix_pelicula_caracteristica = vectorizer.transform([cadena_pelicula_caracteristicas])
+
+    # Calcular la similitud del coseno entre la película que le gustó al usuario y todas las demás películas
+    similitudes = cosine_similarity(matrix_pelicula_caracteristica, matrix_todas_caracteristicas)
+
+    # Obtener los índices de las películas más similares
+    similitudes_indices = similitudes.argsort()[0][-6:-1]
+
+    # Obtener los títulos de las películas más similares
+    similitudes_peliculas = LARG_moviesdataset_reducido.loc[similitudes_indices, 'title'].tolist()
+
+    return similitudes_peliculas    
