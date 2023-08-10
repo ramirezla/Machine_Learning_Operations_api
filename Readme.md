@@ -43,6 +43,10 @@
 ### Estudiante: *Luis A, Ramirez G.*<br>
 GitHub: ramirezla<br>
 Email Github: ramirezluisalberto@hotmail.com<br>
+Repositorio:<br>
+https: `https://github.com/ramirezla/PI_ML_OPS-main_fastapi.git`<br>
+ssh: `git@github.com:ramirezla/PI_ML_OPS-main_fastapi.git`<br>
+
 Email usuario Henry: ramirezgluisalberto@gmail.com<br>
 
 Versiones paquetes utilizados: <br>
@@ -284,14 +288,14 @@ Graficando algunos campos y sus categorias
 <img src="./src/CargaDelDatasets_grafico1.jpg">
 </p>
 
-Se puede observar que la columna 'adult' ademas de que la mayor cantidad es 'false', y no aporta nada, los otros datos son errores, es candidata a ser eliminada la columna 'adult
+Se puede observar que la columna 'video' ademas de que la mayor cantidad es 'false', y no aporta nada, los otros datos son errores, entonces se puede pensar que esta columna es candidata a ser eliminada.
 
 - - -
 
 Mediante el analisis visual se presentan columnas con datos formados por diccionarios y listas de diccionarios, este tipo de información se encuentra anidada o agrupada, y la información principal se encuentra en la clave 'name', 'character', 'department', 'job', por lo que, es necesario obtener el valor que viene en la clave principal que se desea.
 Se crean algunas funciones que exploran y extraen el valor de la clave, tanto para datos tipos diccionarios como listas de diccionarios.
 
-- `1.- def Valor_name_desde_dicc(value):`, esta funcion recibe (mediante aplicacion) el dataframe y la columna diccionario, retorna el valor de la clave `'name'`, o una cadena vacia si no cumple con la caracteristica de diccionario de python..
+- `1.- def Valor_name_desde_dicc(value):`, esta funcion recibe (mediante aplicacion) el dataframe y la columna diccionario, retorna el valor de la clave `'name'`, o una cadena vacia si no cumple con la caracteristica de diccionario de python.
 - `2.- def Valor_name_desde_list(value):`, esta funcion recibe (mediante aplicacion) el dataframe y la columna lista de diccionario, retorna el valor de la clave `'name'` o una cadena vacia si no cumple con la caracteristica de lista de diccionario.
 - `3.- def Valor_character_desde_list(value):`, esta funcion recibe (mediante aplicacion) el dataframe y la columna lista de diccionario, retorna el valor de la clave `'character'` o una cadena vacia si no cumple con la caracteristica de lista de diccionario.
 - `4.- Valor_department_desde_list(value):`, esta funcion recibe (mediante aplicacion) el dataframe y la columna lista de diccionario, retorna el valor de la clave `'department'` o una cadena vacia si no cumple con la caracteristica de lista de diccionario.
@@ -301,10 +305,10 @@ Se crean algunas funciones que exploran y extraen el valor de la clave, tanto pa
 
 **return = revenue / budget**
 
-Característica
+Característica<br>
 Crear la columna con el retorno de inversión, llamada return con los campos revenue y budget, 
 dividiendo estas dos últimas revenue / budget, cuando no hay datos disponibles para calcularlo, deberá tomar el valor 0
-Es importante saber si el divisor 'revenue' tiene valores 0, ya que no existe la division por 0
+Es importante saber si el divisor 'budget' tiene valores 0, ya que no existe la division por 0
 Se crea una fumcion lambda, donde retorna 0 si budget es 0, de lo contrario, retorna la division de revenue / budget y crea la columna 'return'
 
 **`df_movies_desanidado['return'] = df_movies_desanidado.apply(lambda x_return: 0 if x_return['budget'] == 0 else (x_return['revenue'] / x_return['budget']), axis=1)`**
