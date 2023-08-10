@@ -50,7 +50,7 @@ def pelicula_duracion_anno(pelicula: str):
     duracion_min = 0
     anno = 0
     if(existe_pelicula(pelicula)):
-        duracion_min = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'] == pelicula]['runtime'])
+        duracion_min = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'].str().title() == pelicula.title()]['runtime'])
         anno = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'] == pelicula]['release_year'])   # Se cambia el tipo de dato a int para que Json no tenga problemas con el tipo int64
     else:
         pass 
