@@ -39,7 +39,7 @@ def peliculas_idioma(idioma:str):
     try:
         valores = LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['original_language'] == idioma]
         cant_peliculas = int(valores['original_language'].count())
-    except (ValueError, SyntaxError):
+    except IndexError:
         pass
     return {'Idioma':idioma, 'Cantidad de peliculas': cant_peliculas}
 
@@ -54,7 +54,7 @@ def pelicula_duracion_anno(pelicula: str):
             pelicula = pelicula.title()
             duracion_min = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'] == pelicula]['runtime'])
             anno = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'] == pelicula]['release_year'])   # Se cambia el tipo de dato a int para que Json no tenga problemas con el tipo int64
-        except (ValueError, SyntaxError):
+        except IndexError:
             pass 
     else:
         pass 
@@ -65,12 +65,13 @@ def pelicula_duracion_anno(pelicula: str):
 @app.get('/franquicia_cant_gana_prom_peliculas/{franquicia}')
 def franquicia_cant_gana_prom_peliculas(franquicia:str):
     try:
+        franquicia = franquicia.title()
         cantidad_peliculas = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['belongs_to_collection'] == franquicia]['title'].count())
         ganancia_total = round(float(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['belongs_to_collection'] == franquicia]['revenue'].sum()),2)
         ganancia_promedio = 0
         if cantidad_peliculas != 0:
             ganancia_promedio = round(float(ganancia_total/cantidad_peliculas),2)
-    except (ValueError, SyntaxError):
+    except IndexError:
         # pass 
         print("No se encontro la franquicia")
     return {'Titulo franquicia':franquicia, 'Cantidad peliculas':cantidad_peliculas, 'Ganancia Total':ganancia_total, 'Promedio ganancia':ganancia_promedio}
@@ -81,8 +82,9 @@ def franquicia_cant_gana_prom_peliculas(franquicia:str):
 @app.get('/peliculas_pais/{pais}')
 def peliculas_pais(pais:str):
     try:
+        pais = pais.title()
         cant_peliculas = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['production_countries'] == pais]['title'].count())
-    except (ValueError, SyntaxError):
+    except IndexError:
         # pass
         print("No se encontro el Pais")
     return {'Pais':pais, 'Cantidad de peliculas que ha producido':cant_peliculas}
@@ -92,9 +94,10 @@ def peliculas_pais(pais:str):
 @app.get('/productoras_exitosas/{productora}')
 def productoras_exitosas(productora:str):
     try:
+        productora = productora.title()
         total_revenue = float(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['production_companies'] == productora]['revenue'].sum())
         cantidad_peliculas = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['production_companies'] == productora]['revenue'].count())
-    except (ValueError, SyntaxError):
+    except IndexError:
         # pass 
         print("No se encontro la productora")
     return {'Productora':productora, 'Total ingresos': total_revenue,'Cantidad de peliculas':cantidad_peliculas}
@@ -109,13 +112,14 @@ def productoras_exitosas(productora:str):
 @app.get('/get_director/{director}')
 def get_director(director:str):
     try:
+        director = director.title()
         df_Director = LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['crew'].str.contains(director)]   
         Peliculas_del_Director = df_Director[['title', 'release_year', 'revenue', 'budget']]
         retorno_total_director = 0
         if(Peliculas_del_Director['budget'].sum() != 0):
             retorno_total_director = (Peliculas_del_Director['revenue'].sum() / Peliculas_del_Director['budget'].sum())
         Lista_De_Dicc = Peliculas_del_Director.to_numpy().tolist()       
-    except (ValueError, SyntaxError):
+    except IndexError:
         # pass 
         print("No se encontro el director")
     return {'Nombre Director':director, 'Relacion de retorno':retorno_total_director, 'Pelicula, Año, Ingreso, Presupuesto':Lista_De_Dicc}
