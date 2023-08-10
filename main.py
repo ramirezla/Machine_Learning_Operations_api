@@ -19,6 +19,18 @@ LARG_moviesdataset_reducido = pd.read_csv(ruta_archivo_movies)
 # Se instancia una variable de tipo FastAPI
 app = FastAPI(title='PI_ML_OPS-main', description='Luis A Ramirez G')
 
+# Funcion que retorna True si la pelicula existe y False de lo contrario.
+def existe_pelicula(pelicula:str):
+    existe = True
+    pelicula = pelicula.title()
+    # pelicula = pelicula.title()
+    try:
+        LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'].str.title() == pelicula, 'title'].iloc[0]
+        # pass
+    except IndexError:
+        existe = False
+    return existe
+
 # def peliculas_idioma( Idioma: str ): 
 # Se ingresa un idioma (como están escritos en el dataset, no hay que traducirlos!). 
 # Debe devolver la cantidad de películas producidas en ese idioma.
@@ -28,8 +40,7 @@ def peliculas_idioma(idioma:str):
         valores = LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['original_language'] == idioma]
         cant_peliculas = int(valores['original_language'].count())
     except (ValueError, SyntaxError):
-        #pass
-        print('No se encontro el idioma, error: ',error_except) 
+        pass
     return {'Idioma':idioma, 'Cantidad de peliculas': cant_peliculas}
 
 # def peliculas_duracion( Pelicula: str ): 
@@ -40,7 +51,8 @@ def pelicula_duracion_anno(pelicula: str):
         duracion_min = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'] == pelicula]['runtime'])
         anno = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'] == pelicula]['release_year'])   # Se cambia el tipo de dato a int para que Json no tenga problemas con el tipo int64
     except (ValueError, SyntaxError):
-        pass 
+        # pass
+        print("No se encontro la pelicula")
     return {'Pelicula':pelicula, 'Duracion en minutos':duracion_min, 'Año de estreno':anno}
 
 # def franquicia( Franquicia: str): 
@@ -54,7 +66,8 @@ def franquicia_cant_gana_prom_peliculas(franquicia:str):
         if cantidad_peliculas != 0:
             ganancia_promedio = round(float(ganancia_total/cantidad_peliculas),2)
     except (ValueError, SyntaxError):
-        pass 
+        # pass 
+        print("No se encontro la franquicia")
     return {'Titulo franquicia':franquicia, 'Cantidad peliculas':cantidad_peliculas, 'Ganancia Total':ganancia_total, 'Promedio ganancia':ganancia_promedio}
 
 # def peliculas_pais( Pais: str ): 
@@ -65,7 +78,8 @@ def peliculas_pais(pais:str):
     try:
         cant_peliculas = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['production_countries'] == pais]['title'].count())
     except (ValueError, SyntaxError):
-        pass 
+        # pass
+        print("No se encontro el Pais")
     return {'Pais':pais, 'Cantidad de peliculas que ha producido':cant_peliculas}
 
 # def productoras_exitosas( Productora: str ): 
@@ -76,7 +90,8 @@ def productoras_exitosas(productora:str):
         total_revenue = float(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['production_companies'] == productora]['revenue'].sum())
         cantidad_peliculas = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['production_companies'] == productora]['revenue'].count())
     except (ValueError, SyntaxError):
-        pass 
+        # pass 
+        print("No se encontro la productora")
     return {'Productora':productora, 'Total ingresos': total_revenue,'Cantidad de peliculas':cantidad_peliculas}
 
 # df_split_job = LARG_moviesdataset_reducido['job'].str.split(',')
@@ -96,7 +111,8 @@ def get_director(director:str):
             retorno_total_director = (Peliculas_del_Director['revenue'].sum() / Peliculas_del_Director['budget'].sum())
         Lista_De_Dicc = Peliculas_del_Director.to_numpy().tolist()       
     except (ValueError, SyntaxError):
-        pass 
+        # pass 
+        print("No se encontro el director")
     return {'Nombre Director':director, 'Relacion de retorno':retorno_total_director, 'Pelicula, Año, Ingreso, Presupuesto':Lista_De_Dicc}
 
 # Modelo de recomendacion
@@ -116,27 +132,28 @@ def get_recomendacion(pelicula:str):
 
     # Se pone la pelicula como titulo, es decir, la primera letra de cada palabra en mayuscula, para evitar que falle si no lo escribe bien.
     pelicula = pelicula.title()
+    if(existe_pelicula(pelicula)):
+        # Crear un objeto CountVectorizer para convertir las características en vectores
+        vectorizer = CountVectorizer(analyzer='word', lowercase=True, token_pattern=r'\w+')
 
-    # Crear un objeto CountVectorizer para convertir las características en vectores
-    vectorizer = CountVectorizer(analyzer='word', lowercase=True, token_pattern=r'\w+')
+        # Concatena todas las caracteristicas que deseo evaluar
+        cadena_todas_caracteristicas = LARG_moviesdataset_reducido['genres'].fillna('') + ' ' + LARG_moviesdataset_reducido['crew'].astype(str) + ' ' + LARG_moviesdataset_reducido['cast'].astype(str) + ' ' + LARG_moviesdataset_reducido['release_year'].astype(str)
+        # Obtener la matriz de documentos término-frecuencia (DTM) a partir de las características
+        matrix_todas_caracteristicas = vectorizer.fit_transform(cadena_todas_caracteristicas)
 
-    # Concatena todas las caracteristicas que deseo evaluar
-    cadena_todas_caracteristicas = LARG_moviesdataset_reducido['genres'].fillna('') + ' ' + LARG_moviesdataset_reducido['crew'].astype(str) + ' ' + LARG_moviesdataset_reducido['cast'].astype(str) + ' ' + LARG_moviesdataset_reducido['release_year'].astype(str)
-    # Obtener la matriz de documentos término-frecuencia (DTM) a partir de las características
-    matrix_todas_caracteristicas = vectorizer.fit_transform(cadena_todas_caracteristicas)
+        # Obtener las características de la película que le gustó al usuario
+        cadena_pelicula_caracteristicas = LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'].str.title() == pelicula, 'genres'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'].str.title() == pelicula, 'crew'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'].str.title() == pelicula, 'cast'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'].str.title() == pelicula, 'release_year'].iloc[0].astype(str)
+        # Obtener la matriz de documentos término-frecuencia (DTM) a partir de las características
+        matrix_pelicula_caracteristica = vectorizer.transform([cadena_pelicula_caracteristicas])
 
-    # Obtener las características de la película que le gustó al usuario
-    cadena_pelicula_caracteristicas = LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'].str.title() == pelicula, 'genres'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'].str.title() == pelicula, 'crew'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'].str.title() == pelicula, 'cast'].iloc[0] + ' ' + LARG_moviesdataset_reducido.loc[LARG_moviesdataset_reducido['title'].str.title() == pelicula, 'release_year'].iloc[0].astype(str)
-    # Obtener la matriz de documentos término-frecuencia (DTM) a partir de las características
-    matrix_pelicula_caracteristica = vectorizer.transform([cadena_pelicula_caracteristicas])
+        # Calcular la similitud del coseno entre la película que le gustó al usuario y todas las demás películas
+        similitudes = cosine_similarity(matrix_pelicula_caracteristica, matrix_todas_caracteristicas)
 
-    # Calcular la similitud del coseno entre la película que le gustó al usuario y todas las demás películas
-    similitudes = cosine_similarity(matrix_pelicula_caracteristica, matrix_todas_caracteristicas)
+        # Obtener los índices de las películas más similares
+        similitudes_indices = similitudes.argsort()[0][-6:-1]
 
-    # Obtener los índices de las películas más similares
-    similitudes_indices = similitudes.argsort()[0][-6:-1]
-
-    # Obtener los títulos de las películas más similares
-    similitudes_peliculas = LARG_moviesdataset_reducido.loc[similitudes_indices, 'title'].tolist()
-
+        # Obtener los títulos de las películas más similares
+        similitudes_peliculas = LARG_moviesdataset_reducido.loc[similitudes_indices, 'title'].tolist()
+    else:
+        similitudes_peliculas = ["No existe la pelicula"]  
     return similitudes_peliculas
