@@ -49,9 +49,13 @@ def peliculas_idioma(idioma:str):
 def pelicula_duracion_anno(pelicula: str):
     duracion_min = 0
     anno = 0
+    pelicula = pelicula.title()
     if(existe_pelicula(pelicula)):
-        duracion_min = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'].str().title() == pelicula.title()]['runtime'])
-        anno = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'] == pelicula]['release_year'])   # Se cambia el tipo de dato a int para que Json no tenga problemas con el tipo int64
+        try:
+            duracion_min = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'].str().title() == pelicula.title()]['runtime'])
+            anno = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'] == pelicula]['release_year'])   # Se cambia el tipo de dato a int para que Json no tenga problemas con el tipo int64
+        except IndexError:
+            pass
     else:
         pass 
     return {'Nombre Pelicula':pelicula, 'Duracion en minutos':duracion_min, 'Año de estreno':anno}
