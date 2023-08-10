@@ -47,13 +47,14 @@ def peliculas_idioma(idioma:str):
 # Se ingresa una pelicula. Debe devolver la duracion y el año.
 @app.get('/pelicula_duracion_anno/{pelicula}')
 def pelicula_duracion_anno(pelicula: str):
-    try:
+    duracion_min = 0
+    anno = 0
+    if(existe_pelicula(pelicula)):
         duracion_min = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'] == pelicula]['runtime'])
         anno = int(LARG_moviesdataset_reducido[LARG_moviesdataset_reducido['title'] == pelicula]['release_year'])   # Se cambia el tipo de dato a int para que Json no tenga problemas con el tipo int64
-    except (ValueError, SyntaxError):
-        # pass
-        print("No se encontro la pelicula")
-    return {'Pelicula':pelicula, 'Duracion en minutos':duracion_min, 'Año de estreno':anno}
+    else:
+        pass 
+    return {'Nombre Pelicula':pelicula, 'Duracion en minutos':duracion_min, 'Año de estreno':anno}
 
 # def franquicia( Franquicia: str): 
 # Se ingresa la franquicia, retornando la cantidad de peliculas, ganancia total y promedio.
